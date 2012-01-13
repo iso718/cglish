@@ -1,35 +1,42 @@
 #ifndef CGLISH_H_INCLUDED
 #define CGLISH_H_INCLUDED
 
+#define DEBUG
 
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#define RETURN_SUCCESS EXIT_SUCCESS
-#define RETURN_FAILURE EXIT_FAILURE
+#define MAX_INPUT 1024
+
+#define MSG_CON(MSG,...) printf(MSG,##__VA_ARGS__);
+
+#ifdef DEBUG
+#define MSG_DBG(MSG,...) fprintf(stdout,"DEBUG: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__)
+#else
+#define MSG_DBG(MSG,...)
+#endif
 
 #include "cglish_modules.h"
-void test();
-void checkPointer(void* pToCheck);  //Exit if pointer is NULL
 
+t_node *pMasterNode;
+t_node *pCurNode;
 
+void exitOnNULLPointer(void* pToCheck);  //Exit if pointer is NULL
+
+// Init Functions
+void __initModules();
+void __initBtree();
+void __mainloop();
 #endif // CGLISH_H_INCLUDED
 
 
 /*
 DONE: Konzept Module einbinden
-Module werden statisch eingebunden. Jedes Modul muss seinen header und seine init function im cglish header eintragen.
+DONE: Basic Btree implementation
+DONE: Interface for registering modules
+DONE: Basic MSG output
+TODO:
++) Create simple module and function
+-) Input loop
 */
-/*
-TODO: Btree implementation
-+) struct node
-+) struct data:
-+) func abort if pointer is  NULL
-+) func create node
--) func addchild
-+) func creat node data
--) func add node
-*/
-
-

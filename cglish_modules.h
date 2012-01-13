@@ -7,34 +7,36 @@
 typedef struct {
 void (*pFunc) (int);  // 0=init, 1=clean
 }t_initMod;
-
-typedef struct {
-    void *pMaster;
-    void *pFirstChild;
-    void *pNextNode;
-    void *pPrevNode;
-    void *pData;
-}t_node;
-
 typedef struct {
     char sPrompt[MAX_PROMPT];
     char sHelp[MAX_HELP];
     void (*pFunc)(char**);
 }t_nodeData;
 
-t_node* modCreateNode(t_node*); // mallocs new node and call __addchildnode
-t_nodeData* modCreateNodeData(char *sPrompt, char *sHelp, void (*pFunc)()); //malloc and init new Data
-void* __malloc(int size); // malloc mit Fehlerprüfung
-void __addChildNode(t_node*); // Fügt child in den tree ein
+typedef struct {
+    void *pMaster;
+    void *pFirstChild;
+    void *pNextNode;
+    void *pPrevNode;
+    t_nodeData *pData;
+}t_node;
+
+t_node* nodeInit(); //Wrapper to create a first node.
+t_node* registerModule(t_node*, char*, char*, void (*)()); //Add new Module function in the tree
+
+char* dataGetPrompt(t_node*); //Returns the prompt of a give node
+
+t_node* __nodeAdd(t_node*, t_nodeData*); // malloc and append new node
+t_nodeData* __nodeDataAdd(char *sPrompt, char *sHelp, void (*pFunc)()); //malloc and init new Data
+
 /* Module registration */
-#define NR_MODULES 10  //Increase on demand
 // include your module here
-//#include "module1.h"
+#include "mod_math.h"
 
 //Add your init function
 #define INIT_MODULES \
-t_initMod initMods[NR_MODULES]={ \
-{&test}, \
+t_initMod initMods[]={ \
+{&math_init}, \
 {NULL} \
  }
 

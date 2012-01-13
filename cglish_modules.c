@@ -23,6 +23,7 @@ void* __malloc(int mySize){
 void __addChildNode(t_node *pMaster){
         if (!pMaster)
             return;
+
         // Erstes child wenn !firstchild
         // Neues letztes child wenn firstchild vorhanden.
 }

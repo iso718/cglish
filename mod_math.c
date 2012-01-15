@@ -9,8 +9,7 @@ void math_init(){
 
 void math_add(int nArg,char** sArg){
     int i;
-    for (i=0; i<nArg;i++ )
-        MSG_CON("%s\n",sArg[i]);
+    MSG_DBG("Got: nArg: <%i>, sArg at <%p>",nArg, sArg);
 }
 
 void math_default(int nArg,char** sArg){

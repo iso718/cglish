@@ -13,10 +13,30 @@ t_node* nodeInit(char *sPrompt, char *sHelp, void (*pFunc)()){
 }
 
 char* dataGetPrompt(t_node *pMyNode){
+    MSG_DBG_NOD("dataGetPrompt: Return prompt <%s> from node <%p>",pMyNode->pData->sPrompt, pMyNode);
     return (pMyNode->pData->sPrompt);
-
 }
 
+t_node* getNodeByPrompt(t_node *pMyMaster,char *myPrompt){
+    t_node *pTmp=pMyMaster->pFirstChild;
+    MSG_DBG_NOD("getNodeByPrompt: Looking for <%s> in <%p>",myPrompt, pMyMaster);
+    if (pTmp==NULL)
+    {
+        MSG_DBG_NOD("getNodeByPrompt: No Child found in <%p>",pMyMaster);
+        return NULL;
+    }
+    while (pTmp)
+    {
+        if (strcmp(pTmp->pData->sPrompt, myPrompt)==0)
+            {
+                MSG_DBG_NOD("getNodeByPrompt: Found at <%p>", pTmp);
+                return pTmp;
+            }
+        pTmp=pTmp->pNextNode;
+    }
+    MSG_DBG_NOD("getNodeByPrompt: Prompt <%s> not found",myPrompt);
+    return NULL;
+}
 
 t_node* __nodeAdd(t_node *pMyMaster, t_nodeData *pData){
         t_node *pTmp = (t_node*) malloc (sizeof(t_node));

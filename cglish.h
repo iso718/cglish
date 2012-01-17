@@ -54,7 +54,19 @@ DONE: Interface for registering modules
 DONE: Basic MSG output
 DONE: Create simple module and function
 DONE: Input loop
-TODO: Help mechanism
 TODO: Re-write process user input
--) Kette bis zu function (math add 1 3 sollte func in add mit 1 3 aufrufen)
+-) Konzept überlegen
+*/
+
+/*
+Konzept Konsole:
+Befehl: Wechselt zu befehl
+befehl - befehl -.. Wechselt zum letzen befehl in der kette
+Param: Führt die funktion in der aktuellen ebene aus
+befehl - Param -> Führt die Funktion unter befehl mit param aus. ändert nicht die aktuelle ebene
+befehl - befehl - .. -param -> Führt die Funktion unter befehl mit param aus. ändert nicht die aktuelle ebene
+
+Fehlerbehandlung:
+Derzeit keine, bzw. wird auf moduĺebene gelöst
+
 */

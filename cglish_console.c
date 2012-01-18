@@ -1,6 +1,7 @@
 #include "cglish.h"
 #include <ncurses.h>
 
+
 void conInit(){ // inits the console
         initscr();
         nonl();
@@ -10,7 +11,57 @@ void conInit(){ // inits the console
         cbreak();
         noecho();
         conClear();
+        __keyInit();
 }
+
+void __keyInit()
+{
+    int i;
+    for (i=0;i<sizeof(keyFunc)/sizeof(void (*)());i++)
+        keyFunc[i]=NULL;
+    keyFunc[8]=&__keyBackspace;
+    keyFunc[127]=&__keyBackspace;
+    keyFunc[258]=&__keyDown;
+    keyFunc[259]=&__keyUp;
+    keyFunc[260]=&__keyLeft;
+    keyFunc[261]=&__keyRight;
+    keyFunc[263]=&__keyBackspace;
+}
+
+void __keyBackspace(){
+
+}
+void __keyUp(){
+
+}
+void __keyDown(){
+
+}
+void __keyLeft(){
+
+}
+void __keyRight(){
+
+}
+int __getCurPos(int xy){
+    int x,y;
+    getyx(stdscr,y,x);
+    MSG_DBG("x: %i, y: %i",x,y);
+    return xy==GETROW ? y : x;
+}
+void __getCurLine(chtype *sDst){
+    int y,x;
+    getyx(stdscr,y,x);
+    move(y,0);
+    inchnstr(sDst,MAX_INPUT);
+}
+
+void __curMvLeft(int n){
+}
+void __curMvRight(int n){
+}
+
+
 void conQuit() {// Close the screen and free resources
         nocbreak();
         echo();
@@ -19,56 +70,21 @@ void conQuit() {// Close the screen and free resources
 
 int conMainLoop(char *sDst){
     unsigned int c;
-    int nCurPos=0;
+    int nCurPos;
+    chtype inputStr[MAX_INPUT];
     sDst[0]='\0';
     while ((c=getch())!=13)
-        switch (c)
+    {
+        if (keyFunc[c]) keyFunc[c]();
+        else
         {
-        case 13: //Return
-            return NORMAL;
-        case 8: //Backspace
-        case 127:
-        case 263:
-            __keyBackspace();
-            break;
-        case 258:   // History backward
-            __keyArrowDown();
-            break;
-        case 259:  // History forward
-            __keyArrowUp();
-            break;
-        case 260:   // Cursor left
-            __keyArrowLeft();
-            break;
-        case 261:   //Cursor rightl
-            __keyArrowRight();
-            break;
-        default:
             printw("%c",c);
-            sDst[nCurPos]='\0';
         }
+    }
+    __getCurLine(inputStr);
+    MSG_DBG("\n<%s>\n",inputStr);
     return '\0';
 }
-
-void __keyBackspace(){
-
-}
-
-void __keyArrowUp(){
-    printw("KeyUp");
-}
-void __keyArrowDown(){
-    printw("KeyDown");
-}
-void __keyArrowLeft(){
-    printw("KeyLeft");
-}
-void __keyArrowRight(){
-    printw("KeyRight");
-}
-
-
-
 
 void conInfo() {// Print various settings
     printw("Lines: %d, Cols: %d\n",LINES,COLS);

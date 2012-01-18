@@ -13,25 +13,27 @@
 #include <stdbool.h>
 
 #define MAX_INPUT 1024
-#define MSG_OUT(MSG,...) printf(MSG,##__VA_ARGS__);fflush(stdout)
+#define MSG_OUT(MSG,...) printw(MSG,##__VA_ARGS__);fflush(stdout)
 
 #ifdef DEBUG_MEMORY
-#define MSG_DBG_MEM(MSG,...) fprintf(stdout,"DEBUG MEM: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
+#define MSG_DBG_MEM(MSG,...) printw("DEBUG MEM: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
 #else
 #define MSG_DBG_MEM(MSG,...)
 #endif
 
 #ifdef DEBUG_NODEMGMT
-#define MSG_DBG_NOD(MSG,...) fprintf(stdout,"DEBUG NOD: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
+#define MSG_DBG_NOD(MSG,...) printw("DEBUG NOD: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
 #else
 #define MSG_DBG_NOD(MSG,...)
 #endif
 
 #ifdef DEBUG
-#define MSG_DBG(MSG,...) fprintf(stdout,"DEBUG: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
+#define MSG_DBG(MSG,...) printw("DEBUG: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
 #else
 #define MSG_DBG(MSG,...)
 #endif
+
+#define MSG_DBG1(MSG,...) printw("DEBUG: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
 
 #include "cglish_tools.h"
 #include "cglish_modules.h"

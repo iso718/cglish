@@ -47,7 +47,7 @@ enum userRetval {NORMAL,ABORT,QUIT};
 t_node *pMasterNode;
 t_node *pCurNode;
 
-void __processUserInput(char*); //Process the userInput and do the module actions. It will modify char*(stripStr)
+void processUserInput(char*); //Process the userInput and do the module actions. It will modify char*(stripStr)
 void __init();
 void __quit();
 void __mainloop();

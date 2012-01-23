@@ -8,9 +8,9 @@ void conInit(){ // inits the console
         intrflush(stdscr, FALSE);
         keypad(stdscr, TRUE);
         scrollok(stdscr,TRUE);
-        cbreak();
+        raw();
         noecho();
-        conClear();
+        clear();
         __keyInit();
 }
 
@@ -19,7 +19,10 @@ void __keyInit()
     int i;
     for (i=0;i<sizeof(keyFunc)/sizeof(void (*)());i++)
         keyFunc[i]=NULL;
+    keyFunc[3]=&__keyExit; // CTRL-C
+    keyFunc[4]=&__keyBackspace; // CTRL-D
     keyFunc[8]=&__keyBackspace;
+    keyFunc[13]=&__keyEnter;
     keyFunc[127]=&__keyBackspace;
     keyFunc[258]=&__keyDown;
     keyFunc[259]=&__keyUp;
@@ -29,7 +32,8 @@ void __keyInit()
 }
 
 void __keyBackspace(){
-
+    __keyLeft();
+    delch();
 }
 void __keyUp(){
 
@@ -37,30 +41,19 @@ void __keyUp(){
 void __keyDown(){
 
 }
-void __keyLeft(){
-
+void __keyLeft(){ // x=col, y=row
+    move(getcury(stdscr),getcurx(stdscr)-1);
 }
 void __keyRight(){
-
+    move(getcury(stdscr),getcurx(stdscr)+1);
 }
-int __getCurPos(int xy){
-    int x,y;
-    getyx(stdscr,y,x);
-    MSG_DBG("x: %i, y: %i",x,y);
-    return xy==GETROW ? y : x;
-}
-void __getCurLine(chtype *sDst){
-    int y,x;
-    getyx(stdscr,y,x);
-    move(y,0);
-    inchnstr(sDst,MAX_INPUT);
+void __keyExit(){
+    __quit();
 }
 
-void __curMvLeft(int n){
-}
-void __curMvRight(int n){
-}
+void __keyEnter(){
 
+}
 
 void conQuit() {// Close the screen and free resources
         nocbreak();
@@ -68,90 +61,16 @@ void conQuit() {// Close the screen and free resources
         endwin();
 }
 
-int conMainLoop(char *sDst){
+void conMainLoop(){
     unsigned int c;
-    int nCurPos;
-    chtype inputStr[MAX_INPUT];
-    sDst[0]='\0';
-    while ((c=getch())!=13)
+    while ((c=getch()))
     {
         if (keyFunc[c]) keyFunc[c]();
         else
         {
-            printw("%c",c);
+            printw("%i",c);
         }
     }
-    __getCurLine(inputStr);
-    MSG_DBG("\n<%s>\n",inputStr);
-    return '\0';
-}
-
-void conInfo() {// Print various settings
-    printw("Lines: %d, Cols: %d\n",LINES,COLS);
-}
-
-void conRefresh() {// refresh the screen
-    refresh();
-}
-void conClear(){ // empty the screen
-    clear();
-}
-void conOut(char *sOut) {// console output
-    printw("%s",sOut);
-}
-int conInChar() {// console single char input
-    return getch();
-}
-void conInStr(char *sDst) {// console string input. /0 terminated
-    int i=0, c;
-    while ((c=conInChar())!=13)
-        sDst[i++]=c;
-    sDst[i]='\0';
-
-}
-void conInStrN(char *sDst, int nMax ) { // console string input with max N chars. /0 terminated
-    int i=0, c;
-    while ((c=conInChar())!=13)
-    {
-        sDst[i++]=c;
-        if (i==nMax-1)
-            break;
-    }
-    sDst[i]='\0';
 }
 
 
-void conTestChar() {// Testfunction which echoes and print the keycode
-    int c;
-    while ((c=getch())){
-      switch (c)
-      {
-        case 8:
-        case 127:
-        case 263:
-            printw("BACKSPACE, %d",c);
-            break;
-        case 99:
-            conClear();
-            printw("Screen cleared\nKeycode: <%d>, char: <%c>", c,c);
-            break;
-        case KEY_LEFT:
-            printw("KEY LEFT");
-            break;
-        case 113:
-            printw ("quit\n");
-            return;
-        case 114:
-            printw ("refresh");
-            conRefresh();
-            break;
-        case 13:
-            printw ("return");
-            break;
-        default:
-            printw ("Keycode: <%d>, char: <%c>", c,c);
-      }
-      printw("\n\r");
-
-    }
-}

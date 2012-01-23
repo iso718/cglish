@@ -7,18 +7,11 @@ return EXIT_SUCCESS;
 }
 
 void __mainloop(){
-    char sUserInput[MAX_INPUT];
-    MSG_OUT("\n");
-    while(1)
-    {
-        MSG_OUT("%s>",dataGetPrompt(pCurNode));
-         conMainLoop(sUserInput);
-        __processUserInput(sUserInput);
-    }
+    conMainLoop();
     __quit();
 }
 
-void __processUserInput(char *sUserInput){
+void processUserInput(char *sUserInput){
     char **aArg=NULL;
     int nArg, nCmd=0;
     t_node *pTmp=pCurNode;
@@ -61,4 +54,5 @@ void __init(){
 
 void __quit(){
     conQuit();
+    exit(0);
 }

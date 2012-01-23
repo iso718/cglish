@@ -8,7 +8,7 @@ void conInit(){ // inits the console
         intrflush(stdscr, FALSE);
         keypad(stdscr, TRUE);
         scrollok(stdscr,TRUE);
-        cbreak();
+        raw();
         noecho();
         conClear();
         __keyInit();

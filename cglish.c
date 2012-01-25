@@ -41,15 +41,15 @@ void processUserInput(char *sUserInput){
 void __init(){
     //init Console
      conInit();
+     MSG_DBG("Console init done");
+    // init Btree
+    pMasterNode=nodeInit("root","Top level",NULL);
+    pCurNode=pMasterNode;
     // init Modules
     INIT_MODULES;
     int i=0;
     while (initMods[i].pFunc!=NULL)
         initMods[i++].pFunc(0); // 0=init
-
-    // init Btree
-    pMasterNode=nodeInit("root","Top level",NULL);
-    pCurNode=pMasterNode;
 }
 
 void __quit(){

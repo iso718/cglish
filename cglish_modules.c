@@ -13,7 +13,7 @@ t_node* nodeInit(char *sPrompt, char *sHelp, void (*pFunc)()){
 }
 
 char* dataGetPrompt(t_node *pMyNode){
-    MSG_DBG_NOD("dataGetPrompt: Return prompt <%s> from node <%p>",pMyNode->pData->sPrompt, pMyNode);
+    //MSG_DBG_NOD("dataGetPrompt: Return prompt <%s> from node <%p>",pMyNode->pData->sPrompt, pMyNode);
     return (pMyNode->pData->sPrompt);
 }
 
@@ -46,6 +46,7 @@ t_node* __nodeAdd(t_node *pMyMaster, t_nodeData *pData){
         pTmp->pNextNode=NULL;
         pTmp->pPrevNode=NULL;
         pTmp->pData=pData;
+        MSG_DBG_NOD("Add Node <%s> <%p> to master <%p>",pData->sPrompt,pTmp, pMyMaster);
         if (!pMyMaster) //No master -> first node
             return pTmp;
         else if(!pMyMaster->pFirstChild) // No child -> first child

@@ -1,9 +1,10 @@
 #ifndef CGLISH_H_INCLUDED
 #define CGLISH_H_INCLUDED
 
-#define DEBUG
-#define DEBUG_MEMORY
-#define DEBUG_NODEMGMT
+#undef DEBUG
+#undef DEBUG_MEMORY
+#undef DEBUG_NODEMGMT
+#define DEBUG_HISTORY
 
 #undef FALLBACK
 
@@ -14,6 +15,12 @@
 
 #define MAX_INPUT 1024
 #define MSG_OUT(MSG,...) printw(MSG,##__VA_ARGS__);fflush(stdout)
+
+#ifdef DEBUG_HISTORY
+#define MSG_DBG_HIST(MSG,...) printw("DEBUG MEM: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)
+#else
+#define MSG_DBG_HIST(MSG,...)
+#endif
 
 #ifdef DEBUG_MEMORY
 #define MSG_DBG_MEM(MSG,...) printw("DEBUG MEM: (%s:%d) " MSG "\n",__FILE__,__LINE__,##__VA_ARGS__); fflush(stdout)

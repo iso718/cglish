@@ -34,11 +34,13 @@ t_node* getNodeByPrompt(t_node*,char*); //Returns the node which have the given 
 
 /* Module registration */
 // include your module here
+#include "mod_history.h"
 #include "mod_math.h"
 
 //Add your init function
 #define INIT_MODULES \
 t_initMod initMods[]={ \
+{&hist_init}, \
 {&math_init}, \
 {NULL} \
  }

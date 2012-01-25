@@ -68,7 +68,7 @@ void stripStr(char *sDst, char *sSrc){
         while (__isCharStripRelevant(sDst[j-1]))
             j--;
     sDst[j]='\0';
-    MSG_DBG("stripStr: <%s>, length: <%i>",sDst,j);
+    //MSG_DBG("stripStr: <%s>, length: <%i>",sDst,j);
 }
 
 int __isCharStripRelevant(int c){
@@ -82,3 +82,4 @@ int __isCharStripRelevant(int c){
             return false;
     }
 }
+

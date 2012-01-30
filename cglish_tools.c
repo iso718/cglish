@@ -8,6 +8,10 @@ void exitOnNULLPointer(void* pToCheck){
     }
 }
 
+int strIsEmpty(char* str){ //True if str is empty, False otherwise. Empty if [0]='\0'
+    return (str[0]=='\0') ? true : false;
+}
+
 int splitStrToArr(char *sSrc, char ***arr){
     int nTmp=0, nSrc=0, nArrCount=0;
     char sTmp[MAX_INPUT];

@@ -11,5 +11,6 @@ void freeArrFromStr(int,char**); // frees memory alloc'd in splitStrToArr
 
 // Checks
 void exitOnNULLPointer(void* pToCheck);  //Exit if pointer is NULL
+int strIsEmpty(char*); //True if str is empty, False otherwise. Empty if [0]='\0'
 
 #endif // CGLISH_TOOLS_H_INCLUDED

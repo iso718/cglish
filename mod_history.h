@@ -12,6 +12,10 @@ typedef struct {
     char sCmd[MAX_INPUT];
 } t_hist;
 
+t_hist *pFirstHist, *pCurHist, *pLastHist;
+
 void hist_init();
+void hist_add(char*); // add char* to history
+char* hist_get(int); // get +/- int from history
 
 #endif // MOD_HISTORY_H_INCLUDED

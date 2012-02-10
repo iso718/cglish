@@ -3,10 +3,6 @@
 
 #include <ncurses.h>
 
-#define INPUT_NORMAL 0
-#define INPUT_NORMAL 0
-
-enum {GETCOL,GETROW};
 
 void conInit(); // inits the console
 void __keyInit();

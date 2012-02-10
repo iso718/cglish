@@ -1,21 +1,22 @@
 #ifndef MOD_HISTORY_H_INCLUDED
 #define MOD_HISTORY_H_INCLUDED
 
-#include "cglish.h"
-
 #define HISTORY
 #define MAX_HISTORY 20
 
-typedef struct {
-    void *pNext;
-    void *pPrev;
+struct sdHist {
+    struct sdHist *pNext;
+    struct sdHist *pPrev;
     char sCmd[MAX_INPUT];
-} t_hist;
+};
 
-t_hist *pFirstHist, *pCurHist, *pLastHist;
+struct sdHist pHist[MAX_HISTORY];
+struct  sdHist *pGivenHist; // pointer of the last given hist entry
+struct  sdHist *pNewHist;  // pointer where the next history entry should be added
 
-void hist_init();
-void hist_add(char*); // add char* to history
-char* hist_get(int); // get +/- int from history
+void histInit();
+void histAdd(char*); // add char* to history
+char* histGetPrev();
+char* histGetNext();
 
 #endif // MOD_HISTORY_H_INCLUDED

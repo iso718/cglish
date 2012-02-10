@@ -1,50 +1,35 @@
-#include "mod_history.h"
+#include "cglish.h"
 
-void hist_init(){
-    int i;
-    pFirstHist = (t_hist*) malloc (sizeof(t_hist)*MAX_HISTORY);
-    exitOnNULLPointer(pFirstHist);
-    pCurHist=(t_hist*) pFirstHist;
+void histInit(){
+    int i=0;
     for (i=0;i<MAX_HISTORY;i++)
     {
-            pCurHist->pNext=pCurHist;
-            pCurHist->pPrev=pCurHist;
-            pCurHist->sCmd[0]='\0';
+            pHist[i].pNext=&pHist[i+1];
+            pHist[i].pPrev=&pHist[i-1];
+            pHist[i].sCmd[0]='\0';
     }
-     //lLink start and end
-    pFirstHist->pPrev=pCurHist;
-    pCurHist->pNext=pFirstHist;
-    // Set pointers to first el
-    pCurHist=pFirstHist;
-    pLastHist=pFirstHist;
+    pHist[0].pPrev=&pHist[MAX_HISTORY-1];
+    pHist[MAX_HISTORY-1].pNext=&pHist[0];
+    pGivenHist=&pHist[0];
+    pNewHist=&pHist[0];
+    ADD_LOG_ENTRY("mod_history[init]: History Initialisation done. First Element at <%p>\n",&pHist[0]);
 }
 
-void hist_add(char* str){// add char* to history
-    strncpy(pLastHist->sCmd,str,MAX_INPUT);
-    pLastHist=(t_hist*) pLastHist->pNext;
-    pCurHist=pLastHist;
+void histAdd(char* str){// add char* to history
+    strncpy(pNewHist->sCmd,str,MAX_INPUT);
+    pNewHist=pNewHist->pNext;
+    pGivenHist=pNewHist;
+    ADD_LOG_ENTRY("mod_history[add]: Added <%s>  at <%p>\n",str, pGivenHist);
 }
 
-char* hist_get(int n){// get +/- int from history
-    int i;
-    t_hist *pTmp=NULL;
-    if (n<0)
-    {
-        for (i=1;i<=n;i++)
-        {
-            pTmp=(t_hist*) pCurHist->pPrev;  // Maybe there is a better way to derefer void pointer?
-            if (!strIsEmpty(pTmp->sCmd))
-                pCurHist=pCurHist->pPrev;
-        }
-    }
-    if (n>0)
-    {
-        for (i=1;i<=n;i++)
-        {
-            pTmp=(t_hist*) pCurHist->pNext; // Maybe there is a better way to derefer void pointer?
-             if (!strIsEmpty(pCurHist->sCmd))
-                pCurHist=pCurHist->pNext;
-        }
-    }
-    return pCurHist->sCmd;
+char* histGetPrev(){
+    if (strIsEmpty(pGivenHist->pPrev->sCmd)) return NULL;
+    pGivenHist=pGivenHist->pPrev;
+    return pGivenHist->sCmd;
+}
+
+char* histGetNext(){
+    if (strIsEmpty(pGivenHist->pNext->sCmd)) return NULL;
+    pGivenHist=pGivenHist->pNext;
+    return pGivenHist->sCmd;
 }

@@ -60,6 +60,7 @@ void __keyExit(){
 
 void __keyEnter(){
     char sInput[MAX_INPUT];
+
     mvinnstr(getcury(stdscr),0,sInput,MAX_INPUT-1);
     MSG_OUT("%s",sInput); // re-print line. Original line disapear after return..??
     hist_add(sInput);

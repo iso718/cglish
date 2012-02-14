@@ -40,7 +40,6 @@ void conMainLoop(){
 void __conOutPrompt(){
         iCurrentPromptLen=strlen(sCurrentPrompt);
         printw("%s>",sCurrentPrompt);
-        ADD_LOG_ENTRY("mod_console[conoutprompt]: Current Prompt: <%s>, size: <%i>\n",sCurrentPrompt,iCurrentPromptLen);
 }
 void __conGetCurInput(char *sInput){
     // Remember current pos
@@ -125,7 +124,32 @@ void __keyEnter(){
     __conGetCurInput(sInput);
     stripStr(sInput,sInput);
     if (!strIsEmpty(sInput))
-        histAdd(sInput);
+        __processInput(sInput);
     printw("\n");
     __conOutPrompt();
+}
+
+void __processInput(char *sInput){
+    /* RULES
+    <ARG> -> look for and exec function in current level
+    <CMD> -> switch to level cmd
+    <CMD> <CMD> -> switch to cor level
+    <CMD> <ARG> -> exec in cmd with arg but stay in cur level
+    */
+    ADD_DEBUG_ENTRY("mod_console[__processUserInput]: Process Input  <%s>\n",sInput);
+    char **sArr=NULL;
+    void *pNode=pCurrentNode;
+    int nArg=0,i=0;
+    histAdd(sInput);
+    nArg=splitStrToArr(sInput,&sArr);
+    i=0;
+    while (i<nArg && (pNode=getNodeByPrompt(pNode,sArr[i])))
+    {
+        ADD_DEBUG_ENTRY("mod_console[__processUserInput]: Found User Arg <%i> <%s> at <%p>\n",i,sArr[i],pNode);
+        i++;
+    }
+    if (i==nArg) // Only CMD in sArg
+        switchToNode(pNode);
+
+    freeArrFromStr(nArg,sArr);
 }

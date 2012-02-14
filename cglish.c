@@ -55,6 +55,48 @@ void stripStr(char *sDst, char *sSrc){
     sDst[j]='\0';
 }
 
+int splitStrToArr(char *sSrc, char ***arr){
+    int nTmp=0, nSrc=0, nArrCount=0,i;
+    char sTmp[MAX_INPUT];
+    char *pTmp=NULL;
+    char **ppTmp=NULL;
+    for (nSrc=0;nSrc<=strlen(sSrc);nSrc++)
+    {
+        if (sSrc[nSrc]== ' ' || sSrc[nSrc]=='\0')
+        {
+            sTmp[nTmp]='\0';
+            pTmp=(char*) malloc(sizeof(char)*(nTmp+1));
+            exitOnNULLPointer(pTmp);
+            strcpy(pTmp,sTmp);
+            ppTmp=(char**) realloc(ppTmp,sizeof(char**)*++nArrCount);
+            exitOnNULLPointer(ppTmp);
+            ppTmp[nArrCount-1]=pTmp;
+            nTmp=0;
+        }
+        else
+        {
+            sTmp[nTmp++]=sSrc[nSrc];
+        }
+    }
+    *arr=ppTmp;
+    ADD_DEBUG_ENTRY("cglish[splitStrToArr]: Processed input <%s> to arr size <%i>\n",sSrc,nArrCount);
+    for (i=0;i<nArrCount;i++)
+        ADD_DEBUG_ENTRY("cglish[splitStrToArr]: Arg <%i> Str <%s>\n",i,ppTmp[i]);
+    return nArrCount;
+}
+
+void freeArrFromStr(int nArr,char **sArr){
+    int nTmp;
+    for (nTmp=0;nTmp<nArr;nTmp++)
+    {
+        free(sArr[nTmp]);
+    }
+    free(sArr);
+}
+
+
+
+
 
 
 //#include "cglish.h"

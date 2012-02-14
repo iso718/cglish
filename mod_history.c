@@ -19,7 +19,7 @@ void histAdd(char* str){// add char* to history
     strncpy(pNewHist->sCmd,str,MAX_INPUT);
     pNewHist=pNewHist->pNext;
     pGivenHist=pNewHist;
-    ADD_LOG_ENTRY("mod_history[add]: Added <%s>  at <%p>\n",str, pGivenHist);
+    ADD_DEBUG_ENTRY("mod_history[add]: Added <%s>  at <%p>\n",str, pGivenHist);
 }
 
 char* histGetPrev(){

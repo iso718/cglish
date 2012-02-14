@@ -22,15 +22,18 @@ struct nodeTree {
 
 //globals
 struct nodeTree *pNodeTreeMaster;
-struct nodeTree *currentNode;
+struct nodeTree *pCurrentNode;
 char sCurrentPrompt[MAX_PROMPT];
 
 // exported functions
 void dataInit(); // Initialisation
-struct nodeTree* addNode(struct nodeTree*,char*,char*); //Adds a node to the tree.
+struct nodeTree* addNode(struct nodeTree*,char*,char*,void (*pFunc)(int,char**)); //Adds a node to the tree.
+void switchToNode(struct nodeTree*); // Switch to the given node
+struct nodeTree* getNodeByPrompt(struct nodeTree*, char*); // Returns the nodes address of a given prompt in current level
 
 // internal functions
 void* __memNewNode(); // mallocs and init a new node
+void __setPrompt(char *sPrompt);
 
 
 

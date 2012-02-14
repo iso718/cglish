@@ -9,6 +9,7 @@
 void conInit();
 void conQuit();
 void conMainLoop();
+void __processInput(char *sInput);
 
 // Struct holding the functions for key actions
 void (*keyFunc[340])(); // Maybe not the best solution for keypress to function?

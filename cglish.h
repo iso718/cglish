@@ -35,6 +35,9 @@ int strIsEmpty(char*);
 int isCharStripRelevant(int);
 /* String functions */
 void stripStr(char*, char*); // strips the user input
+int splitStrToArr(char *sSrc, char ***arr);
+void freeArrFromStr(int nArr,char **sArr);
+
 
 /* MACROS */
 #define EXIT_IF_NULL(P) if (!P) abnormalAbort();

@@ -14,11 +14,12 @@ struct nodeTree* addNode(struct nodeTree *pMaster,char *sPrompt,char *sHelp,void
     struct nodeTree *pNewNode = __memNewNode();
     strncpy(pNewNode->sPrompt,sPrompt,MAX_PROMPT);
     strncpy(pNewNode->sHelp,sHelp,MAX_HELP);
+    pNewNode->pFunc=pFunc;
     if (!pMaster) pMaster=pNodeTreeMaster;
     if(!pMaster->pFirstChild) // No child -> first child
     {
         pMaster->pFirstChild=pNewNode;
-        ADD_LOG_ENTRY("mod_data[nodeTree]: Node <%s> added at <%p> as first child of <%p>\n",sPrompt,pNewNode,pMaster);
+        ADD_DEBUG_ENTRY("mod_data[nodeTree]: Node <%s> added at <%p> as first child of <%p>\n",sPrompt,pNewNode,pMaster);
         return pNewNode;
     }
     else // Existing child(s) -> append to the last
@@ -28,7 +29,7 @@ struct nodeTree* addNode(struct nodeTree *pMaster,char *sPrompt,char *sHelp,void
             pTmpSearch=pTmpSearch->pNext;
         pNewNode->pPrev=pTmpSearch;
         pTmpSearch->pNext=pNewNode;
-        ADD_LOG_ENTRY("mod_data[nodeTree]: Node  <%s> appended at <%p> as last child of <%p>\n",sPrompt,pNewNode,pMaster);
+        ADD_DEBUG_ENTRY("mod_data[nodeTree]: Node  <%s> appended at <%p> as last child of <%p>\n",sPrompt,pNewNode,pMaster);
         return pNewNode;
     }
 }

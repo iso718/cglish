@@ -11,8 +11,17 @@ void conInit(){ // inits the console
         noecho();
         clear();
         __keyInit();
-        isINS=true;
+        isINS=true; //not used
+        __conModuleInit();
         ADD_LOG_ENTRY("mod_console[init]: Console initialisation done.\n");
+}
+
+void __conModuleInit()
+{
+        void *pConsoleNode, *pDebugNode;
+        pConsoleNode=addNode(NULL,"con","Console tools and functions",NULL);
+        pDebugNode=addNode(pConsoleNode,"keycode","Tools around keycodes",NULL);
+        addNode(pDebugNode,"char2code","Convert gives chars to there keycode. ",&__conDbgChar2Code);
 }
 void conQuit() {// Close the screen and free resources
         nocbreak();
@@ -36,10 +45,33 @@ void conMainLoop(){
     }
 }
 
+void __conDbgChar2Code(int nArg, char **sArr)
+{
+    int i=0;
+    if (nArg==0) //no Arg given
+        return;
+    if (strcmp(sArr[0],"0")==0) // realtime
+        { OUTPUT_INFO("Start realtime live. Press <q> to exit\n");
+        unsigned int c;
+        while ((c=getch())!='q')
+        {
+            OUTPUT_INFO("Key Entered: <%c> Keycode: <%i> <%#x> \n",c,c,c);
+        }
+    }
+    else
+    {
+        while (sArr[0][i])
+        {
+            OUTPUT_INFO("Key Entered: <%c> Keycode: <%i> <%#x>\n",sArr[0][i],sArr[0][i],sArr[0][i]);
+            i++;
+        }
+    }
+}
+
 // Helpers
 void __conOutPrompt(){
         iCurrentPromptLen=strlen(sCurrentPrompt);
-        printw("%s>",sCurrentPrompt);
+        OUTPUT_CMD("%s>",sCurrentPrompt);
 }
 void __conGetCurInput(char *sInput){
     // Remember current pos
@@ -74,6 +106,7 @@ void __keyInit(){
     keyFunc[4]=&__keyBackspace; // CTRL-D
     keyFunc[8]=&__keyBackspace;
     keyFunc[13]=&__keyEnter;
+    keyFunc[63]=&__keyHelp;
     keyFunc[127]=&__keyBackspace;
     keyFunc[258]=&__keyDown;
     keyFunc[259]=&__keyUp;
@@ -122,34 +155,43 @@ void __keyINS(){
 void __keyEnter(){
     char sInput[MAX_INPUT];
     __conGetCurInput(sInput);
+    OUTPUT_CMD("\n");
     stripStr(sInput,sInput);
     if (!strIsEmpty(sInput))
-        __processInput(sInput);
-    printw("\n");
+        {
+            histAdd(sInput);
+            __processInput(sInput);
+        }
+    __conOutPrompt();
+}
+
+void __keyHelp(){
+    // ? should show current nodes and his children's help
+    OUTPUT_INFO("?\nReal man help themself!\n");
     __conOutPrompt();
 }
 
 void __processInput(char *sInput){
-    /* RULES
-    <ARG> -> look for and exec function in current level
-    <CMD> -> switch to level cmd
-    <CMD> <CMD> -> switch to cor level
-    <CMD> <ARG> -> exec in cmd with arg but stay in cur level
-    */
     ADD_DEBUG_ENTRY("mod_console[__processUserInput]: Process Input  <%s>\n",sInput);
-    char **sArr=NULL;
-    void *pNode=pCurrentNode;
-    int nArg=0,i=0;
-    histAdd(sInput);
+    int i;
+    void *pTmpNode;
+    char **sArr=NULL; int nArg=0;
     nArg=splitStrToArr(sInput,&sArr);
-    i=0;
-    while (i<nArg && (pNode=getNodeByPrompt(pNode,sArr[i])))
-    {
-        ADD_DEBUG_ENTRY("mod_console[__processUserInput]: Found User Arg <%i> <%s> at <%p>\n",i,sArr[i],pNode);
-        i++;
-    }
-    if (i==nArg) // Only CMD in sArg
-        switchToNode(pNode);
 
+    for (i=0;i<nArg;i++)
+    {
+        ADD_DEBUG_ENTRY("mod_console[__processUserInput]: Current: <%i> String: <%s> pCurrentNode: <%p> func: <%p>\n",i, sArr[i],pCurrentNode,pCurrentNode->pFunc);
+        if ((pTmpNode=getNodeByPrompt(NULL,sArr[i]))) // Is cmd
+        {
+            switchToNode(pTmpNode);
+            continue;
+        }
+        if (pCurrentNode->pFunc) // Function exist? Call Func with remaining arg's
+        {
+            pCurrentNode->pFunc(nArg-i,&sArr[i]);
+            break;
+        }
+        OUTPUT_INFO("Fehler: Befehl nicht gefunden und keine Funktion definiert.\n");
+        }
     freeArrFromStr(nArg,sArr);
 }

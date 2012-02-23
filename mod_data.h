@@ -1,6 +1,13 @@
 #ifndef MOD_DATA_H_INCLUDED
 #define MOD_DATA_H_INCLUDED
 
+/*
+mod_data
+Do: Node registration and node handling
+IS MANDATORY
+*/
+
+
 // MIN/MAX Values
 #define MAX_PROMPT 20
 #define MAX_HELP 2048
@@ -18,6 +25,7 @@ struct nodeTree {
     char sPrompt[MAX_PROMPT];
     char sHelp[MAX_HELP];
     void (*pFunc)(int,char**);
+    void (*pFuncHelp)();
 };
 
 //globals
@@ -27,7 +35,7 @@ char sCurrentPrompt[MAX_PROMPT];
 
 // exported functions
 void dataInit(); // Initialisation
-struct nodeTree* addNode(struct nodeTree*,char*,char*,void (*pFunc)(int,char**)); //Adds a node to the tree.
+struct nodeTree* addNode(struct nodeTree*,char*,char*,void (*pFunc)(int,char**), void (*pFuncHelp)() ); //Adds a node to the tree.
 void switchToNode(struct nodeTree*); // Switch to the given node
 struct nodeTree* getNodeByPrompt(struct nodeTree*, char*); // Returns the nodes address of a given prompt in current level
 

@@ -19,9 +19,9 @@ void conInit(){ // inits the console
 void __conModuleInit()
 {
         void *pConsoleNode, *pDebugNode;
-        pConsoleNode=addNode(NULL,"con","Console tools and functions",NULL);
-        pDebugNode=addNode(pConsoleNode,"keycode","Tools around keycodes",NULL);
-        addNode(pDebugNode,"char2code","Convert gives chars to there keycode. ",&__conDbgChar2Code);
+        pConsoleNode=addNode(NULL,"con","Console tools and functions",NULL,NULL);
+        pDebugNode=addNode(pConsoleNode,"keycode","Tools around keycodes",NULL,NULL);
+        addNode(pDebugNode,"char2code","Convert gives chars to there keycode. ",&__conDbgChar2Code,NULL);
 }
 void conQuit() {// Close the screen and free resources
         nocbreak();
@@ -106,7 +106,7 @@ void __keyInit(){
     keyFunc[4]=&__keyBackspace; // CTRL-D
     keyFunc[8]=&__keyBackspace;
     keyFunc[13]=&__keyEnter;
-    keyFunc[63]=&__keyHelp;
+    keyFunc[63]=&__keyHelp; // =?
     keyFunc[127]=&__keyBackspace;
     keyFunc[258]=&__keyDown;
     keyFunc[259]=&__keyUp;
@@ -167,7 +167,8 @@ void __keyEnter(){
 
 void __keyHelp(){
     // ? should show current nodes and his children's help
-    OUTPUT_INFO("?\nReal man help themself!\n");
+    if (pCurrentNode->pFuncHelp) pCurrentNode->pFuncHelp();
+    else OUTPUT_HELP("No help available\n");
     __conOutPrompt();
 }
 
@@ -191,7 +192,8 @@ void __processInput(char *sInput){
             pCurrentNode->pFunc(nArg-i,&sArr[i]);
             break;
         }
-        OUTPUT_INFO("Fehler: Befehl nicht gefunden und keine Funktion definiert.\n");
+        OUTPUT_ERR("Befehl nicht gefunden und keine Funktion definiert.\n");
+        if (pCurrentNode->pFuncHelp) pCurrentNode->pFuncHelp();
         }
     freeArrFromStr(nArg,sArr);
 }

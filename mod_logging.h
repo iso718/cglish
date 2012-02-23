@@ -1,6 +1,14 @@
 #ifndef MOD_LOGGING_H_INCLUDED
 #define MOD_LOGGING_H_INCLUDED
 
+/*
+mod_logging
+IS MANDATORY
+Do: Logfile output
+Do: realtime log output in console
+*/
+
+
 #define LOGFILE "cglish.log"
 #define DEBUGFILE "cglish.dbg"
 FILE *logfile;

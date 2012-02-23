@@ -12,6 +12,7 @@
 #include "mod_data.h"
 #include "mod_console.h"
 #include "mod_history.h"
+#include "mod_psql.h"
 /* module initialisation */
 #define INIT_MODULES \
 void (*initMod[])()=  {\
@@ -20,6 +21,7 @@ void (*initMod[])()=  {\
 &logNodeInit, \
 &histInit, \
 &conInit,\
+&psqlInit,\
 NULL \
 };
 

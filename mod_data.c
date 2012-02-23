@@ -10,11 +10,12 @@ void dataInit(){
 }
 
 
-struct nodeTree* addNode(struct nodeTree *pMaster,char *sPrompt,char *sHelp,void (*pFunc)()  ){//Adds a node to the tree
+struct nodeTree* addNode(struct nodeTree *pMaster,char *sPrompt,char *sHelp,void (*pFunc)(int,char**) , void (*pFuncHelp)() ){//Adds a node to the tree
     struct nodeTree *pNewNode = __memNewNode();
     strncpy(pNewNode->sPrompt,sPrompt,MAX_PROMPT);
     strncpy(pNewNode->sHelp,sHelp,MAX_HELP);
     pNewNode->pFunc=pFunc;
+    pNewNode->pFuncHelp=pFuncHelp;
     if (!pMaster) pMaster=pNodeTreeMaster;
     if(!pMaster->pFirstChild) // No child -> first child
     {
@@ -81,5 +82,7 @@ void* __memNewNode(){
     pNewNode->pNext=NULL;
     pNewNode->sPrompt[0]='\0';
     pNewNode->sHelp[0]='\0';
+    pNewNode->pFunc=NULL;
+    pNewNode->pFuncHelp=NULL;
     return pNewNode;
 }

@@ -15,7 +15,7 @@ PGconn *pgConn;
 char sUN[MAX_PSQL_USERNAME];
 char sPWD[MAX_PSQL_USERPWD];
 struct sdPsqlSrv *pNext;
-} *pPsqlSrv;
+};
 
 // Hardcoded Servers
 // TODO: Configfile

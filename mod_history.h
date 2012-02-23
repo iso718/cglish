@@ -14,6 +14,8 @@ struct sdHist pHist[MAX_HISTORY];
 struct  sdHist *pGivenHist; // pointer of the last given hist entry
 struct  sdHist *pNewHist;  // pointer where the next history entry should be added
 
+void histShow(int, char**);
+void histHelp();
 void histInit();
 void histAdd(char*); // add char* to history
 char* histGetPrev();

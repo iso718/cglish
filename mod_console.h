@@ -12,10 +12,10 @@ Might be replaced by smth other (grafical?)
 
 #define MAX_INPUT 1024
 
-#define OUTPUT_INFO(MSG,...) printw("Info: "MSG,##__VA_ARGS__); // Go to info screen
+#define OUTPUT_INFO(MSG,...) printw(MSG,##__VA_ARGS__); // Go to info screen
 #define OUTPUT_CMD(MSG,...) printw(MSG,##__VA_ARGS__); // Go to cmd screen
 #define OUTPUT_ERR(MSG,...) printw("Error: "MSG,##__VA_ARGS__); // Go to cmd screen
-#define OUTPUT_HELP(MSG,...) printw("Help: "MSG,##__VA_ARGS__); // Go to cmd screen
+#define OUTPUT_HELP(MSG,...) printw(MSG,##__VA_ARGS__); // Go to cmd screen
 
 void conInit();
 void __conModuleInit();
@@ -39,6 +39,8 @@ void __keyCTRL_C();
 void __keyEnter();
 void __keyDEL();
 void __keyINS();
+void __keyPageUp();
+void __keyPageDown();
 
 // Helpers
 void __conOutPrompt();

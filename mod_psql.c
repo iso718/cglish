@@ -1,10 +1,13 @@
 #include "cglish.h"
 
+struct sdPsqlSrv *pPsqlSrv=NULL;
+
 void psqlInit()
 {
     void *pPsqlNode;
     pPsqlNode=addNode(NULL,"psql","Postgres tools and functions",NULL,NULL);
     addNode(pPsqlNode,"connect","Connect to a server",&psqlConnect,&psqlConnectHelp);
+    __psqlInitConfig();
     ADD_LOG_ENTRY("mod_psql[psqlInit]: Psql initialisation done. \n");
 }
 
@@ -30,7 +33,6 @@ void psqlConnectHelp()
     OUTPUT_HELP("Available server:\n");
     do
     {
-        ADD_DEBUG_ENTRY("<%i> - %s - %s - <%i>\n",i,pTmp->sTitle,pTmp->sIPv4,pTmp->nPort);
         OUTPUT_HELP("<%i> - <%s> - <%s> - <%i>\n",i++,pTmp->sTitle,pTmp->sIPv4,pTmp->nPort);
         pTmp=pTmp->pNext;
     } while (pTmp->pNext);
@@ -48,6 +50,7 @@ void __psqlAddSrv(char *sTitle,char *sIpv4,int nPort, char *sUN, char *PWD) // A
     strncpy(pTmpSrv->sPWD,sUN,MAX_PSQL_USERPWD);
     pTmpSrv->pgConn=NULL;
     pTmpSrv->pNext=NULL;
+    ADD_DEBUG_ENTRY("__psqlAddSrc: Added <%s> to <%p>",sTitle,pTmpSrv);
     if (!pPsqlSrv)
     {
         pPsqlSrv=pTmpSrv;

@@ -51,9 +51,10 @@ void __conDbgChar2Code(int nArg, char **sArr)
     if (nArg==0) //no Arg given
         return;
     if (strcmp(sArr[0],"0")==0) // realtime
-        { OUTPUT_INFO("Start realtime live. Press <q> to exit\n");
-        unsigned int c;
-        while ((c=getch())!='q')
+        {
+            OUTPUT_INFO("Start realtime live. Press <q> to exit\n");
+            unsigned int c;
+            while ((c=getch())!='q')
         {
             OUTPUT_INFO("Key Entered: <%c> Keycode: <%i> <%#x> \n",c,c,c);
         }
@@ -115,6 +116,8 @@ void __keyInit(){
     keyFunc[263]=&__keyBackspace;
     keyFunc[330]=&__keyDEL;
     keyFunc[331]=&__keyINS;
+    keyFunc[338]=&__keyPageDown;
+    keyFunc[339]=&__keyPageUp;
 }
 void __keyBackspace(){
     if (getcurx(stdscr) <= iCurrentPromptLen+1) return; // at prompt
@@ -170,6 +173,15 @@ void __keyHelp(){
     if (pCurrentNode->pFuncHelp) pCurrentNode->pFuncHelp();
     else OUTPUT_HELP("No help available\n");
     __conOutPrompt();
+}
+
+void __keyPageDown()
+{
+
+}
+void __keyPageUp()
+{
+
 }
 
 void __processInput(char *sInput){

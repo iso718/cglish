@@ -1,0 +1,31 @@
+/* Default Header */
+
+/* definitions */
+
+/* Includes */
+#include "cglish.h" // includes standard libs and cglish stuff
+// special libs
+
+/* extern functions */
+struct nodeTree* dataAddNode(struct nodeTree *pMaster,char *sPrompt,char *sHelp,void (*pFunc)(int,char**) , void (*pFuncHelp)() );
+
+/* exported control functions (init, help,..) */
+
+/* other exported functions */
+
+/* exported global vars */
+
+/* internal functions */
+
+/* internal global vars  */
+
+
+
+/* name style guide */
+// exported function names in lower camel case e.g. "moduleExportedFunction()"
+// internal functions with prefixed lower camel case e.g. "__moduleInternalFunction()"
+// Format: moduleDoSomethingl
+// http://en.wikipedia.org/wiki/Hungarian_notation
+
+
+

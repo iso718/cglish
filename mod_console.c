@@ -1,4 +1,4 @@
-#include "cglish.h"
+#include "mod_console.h"
 
 // Init and Quit
 void conInit(){ // inits the console
@@ -19,9 +19,9 @@ void conInit(){ // inits the console
 void __conModuleInit()
 {
         void *pConsoleNode, *pDebugNode;
-        pConsoleNode=addNode(NULL,"con","Console tools and functions",NULL,NULL);
-        pDebugNode=addNode(pConsoleNode,"keycode","Tools around keycodes",NULL,NULL);
-        addNode(pDebugNode,"char2code","Convert gives chars to there keycode. ",&__conDbgChar2Code,NULL);
+        pConsoleNode=dataAddNode(NULL,"con","Console tools and functions",NULL,NULL);
+        pDebugNode=dataAddNode(pConsoleNode,"keycode","Tools around keycodes",NULL,NULL);
+        dataAddNode(pDebugNode,"char2code","Convert gives chars to there keycode. ",&__conDbgChar2Code,NULL);
 }
 void conQuit() {// Close the screen and free resources
         nocbreak();
@@ -160,7 +160,7 @@ void __keyEnter(){
     __conGetCurInput(sInput);
     OUTPUT_CMD("\n");
     stripStr(sInput,sInput);
-    if (!strIsEmpty(sInput))
+    if (!testEmptyStr(sInput))
         {
             histAdd(sInput);
             __processInput(sInput);
@@ -194,9 +194,9 @@ void __processInput(char *sInput){
     for (i=0;i<nArg;i++)
     {
         ADD_DEBUG_ENTRY("mod_console[__processUserInput]: Current: <%i> String: <%s> pCurrentNode: <%p> func: <%p>\n",i, sArr[i],pCurrentNode,pCurrentNode->pFunc);
-        if ((pTmpNode=getNodeByPrompt(NULL,sArr[i]))) // Is cmd
+        if ((pTmpNode=dataGetNodeByPrompt(NULL,sArr[i]))) // Is a cmd
         {
-            switchToNode(pTmpNode);
+            dataSwitchToNode(pTmpNode);
             continue;
         }
         if (pCurrentNode->pFunc) // Function exist? Call Func with remaining arg's

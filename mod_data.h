@@ -1,22 +1,32 @@
 #ifndef MOD_DATA_H_INCLUDED
 #define MOD_DATA_H_INCLUDED
 
-/*
-mod_data
-Do: Node registration and node handling
-IS MANDATORY
-*/
+/* Includes */
+#include "cglish.h" // includes standard libs and cglish stuff
+// add special libs here
 
 
-// MIN/MAX Values
+/* Definitions */
 #define MAX_PROMPT 20
 #define MAX_HELP 2048
-
-// root level names
 #define ROOT_PROMPT "root"
 #define ROOT_HELP "Top level"
 
-// Data structures
+/* extern functions */
+
+/* exported control functions (init, help,..)  */
+void dataInit();
+/* other exported functions */
+struct nodeTree* dataAddNode(struct nodeTree*,char*,char*,void (*pFunc)(int,char**), void (*pFuncHelp)() ); //Adds a node to the tree.
+void dataSwitchToNode(struct nodeTree*); // Switch to the given node
+struct nodeTree* dataGetNodeByPrompt(struct nodeTree*, char*); // Returns the nodes address of a given prompt in current level
+
+/* exported global vars */
+
+/* internal functions */
+void* __memNewNode(); // mallocs and init a new node
+void __setPrompt(char *sPrompt);
+/* internal global vars  */
 struct nodeTree {
     struct nodeTree *pMaster;
     struct nodeTree *pFirstChild;
@@ -27,23 +37,9 @@ struct nodeTree {
     void (*pFunc)(int,char**);
     void (*pFuncHelp)();
 };
-
-//globals
 struct nodeTree *pNodeTreeMaster;
 struct nodeTree *pCurrentNode;
 char sCurrentPrompt[MAX_PROMPT];
-
-// exported functions
-void dataInit(); // Initialisation
-struct nodeTree* addNode(struct nodeTree*,char*,char*,void (*pFunc)(int,char**), void (*pFuncHelp)() ); //Adds a node to the tree.
-void switchToNode(struct nodeTree*); // Switch to the given node
-struct nodeTree* getNodeByPrompt(struct nodeTree*, char*); // Returns the nodes address of a given prompt in current level
-
-// internal functions
-void* __memNewNode(); // mallocs and init a new node
-void __setPrompt(char *sPrompt);
-
-
 
 #endif // MOD_DATA_H_INCLUDED
 

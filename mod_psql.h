@@ -1,6 +1,7 @@
 #ifndef MOD_PSQL_H_INCLUDED
 #define MOD_PSQL_H_INCLUDED
 
+#include "cglish.h"
 #include <libpq-fe.h>
 
 #define MAX_PSQL_SRV_TITLE 30

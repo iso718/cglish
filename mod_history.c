@@ -12,7 +12,7 @@ void histInit(){
     pHist[MAX_HISTORY-1].pNext=&pHist[0];
     pGivenHist=&pHist[0];
     pNewHist=&pHist[0];
-    addNode(NULL,"history","show cmd history information",&histShow,&histHelp);
+    dataAddNode(NULL,"history","show cmd history information",&histShow,&histHelp);
     ADD_LOG_ENTRY("mod_history[init]: History Initialisation done.");
     ADD_DEBUG_ENTRY("mod_history[init]: History Initialisation done.First Element at <%p>\n",&pHist[0]);
 }
@@ -25,13 +25,13 @@ void histAdd(char* str){// add char* to history
 }
 
 char* histGetPrev(){
-    if (strIsEmpty(pGivenHist->pPrev->sCmd)) return NULL;
+    if (testEmptyStr(pGivenHist->pPrev->sCmd)) return NULL;
     pGivenHist=pGivenHist->pPrev;
     return pGivenHist->sCmd;
 }
 
 char* histGetNext(){
-    if (strIsEmpty(pGivenHist->pNext->sCmd)) return NULL;
+    if (testEmptyStr(pGivenHist->pNext->sCmd)) return NULL;
     pGivenHist=pGivenHist->pNext;
     return pGivenHist->sCmd;
 }

@@ -7,7 +7,7 @@ void logInit(){
 }
 
 void logNodeInit(){
-    addNode(NULL,"log","show log information",&showLogs,NULL);
+    dataAddNode(NULL,"log","show log information",&showLogs,NULL);
 }
 
 void showLogs(int nArg, char **sArr)

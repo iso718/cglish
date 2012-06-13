@@ -7,11 +7,17 @@ void math_init(){
     registerModule(pMaster,"add","Add given numbers",&math_add);
 }
 
-void math_add(int nArg,char** sArg){
+void math_add(int nArg,char** aArg){
+    MSG_DBG("math add: Got: nArg: <%i>, sArg at <%p>",nArg, aArg);
     int i;
-    MSG_DBG("Got: nArg: <%i>, sArg at <%p>",nArg, sArg);
+    for (i=0;i<nArg;i++)
+        MSG_OUT("%s\n",aArg[i]);
+
 }
 
-void math_default(int nArg,char** sArg){
-
+void math_default(int nArg,char** aArg){
+    MSG_DBG("math default: Got: nArg: <%i>, sArg at <%p>",nArg, aArg);
+    int i;
+    for (i=0;i<nArg;i++)
+        MSG_OUT("%s\n",aArg[i]);
 }

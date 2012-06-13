@@ -5,6 +5,8 @@
 #define DEBUG_MEMORY
 #define DEBUG_NODEMGMT
 
+#undef FALLBACK
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -33,17 +35,21 @@
 
 #include "cglish_tools.h"
 #include "cglish_modules.h"
+#include"cglish_console.h"
+
+
 
 // globals
+enum userRetval {NORMAL,ABORT,QUIT};
+
 t_node *pMasterNode;
 t_node *pCurNode;
 
-void __processUserInput(char*); //Process the userInput and do the module actions. It will modify char*!
-
-// Init Functions
-void __initModules();
-void __initBtree();
+void __processUserInput(char*); //Process the userInput and do the module actions. It will modify char*(stripStr)
+void __init();
+void __quit();
 void __mainloop();
+
 #endif // CGLISH_H_INCLUDED
 
 
@@ -54,19 +60,13 @@ DONE: Interface for registering modules
 DONE: Basic MSG output
 DONE: Create simple module and function
 DONE: Input loop
-TODO: Re-write process user input
--) Konzept überlegen
-*/
-
-/*
-Konzept Konsole:
-Befehl: Wechselt zu befehl
-befehl - befehl -.. Wechselt zum letzen befehl in der kette
-Param: Führt die funktion in der aktuellen ebene aus
-befehl - Param -> Führt die Funktion unter befehl mit param aus. ändert nicht die aktuelle ebene
-befehl - befehl - .. -param -> Führt die Funktion unter befehl mit param aus. ändert nicht die aktuelle ebene
-
-Fehlerbehandlung:
-Derzeit keine, bzw. wird auf moduĺebene gelöst
-
+DONE: Process User Input
+TODO: Console
+-) Init Console
+-) Special Key handling:
+    -) Backspace
+    -) Tab -> Auto vervollständigung
+    -) Pfeil up -> History
+    -) Pfeil links/Rechts -> im String wandern
+    -) Enter -> Process User Args
 */
